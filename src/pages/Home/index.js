@@ -3,17 +3,18 @@
  */
 
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigation } from '@react-navigation/native';
+import Carousel from 'react-native-banner-carousel';
 import { StyleSheet, Dimensions, View, FlatList,TouchableOpacity, Image } from 'react-native';
 import { H2,Card, CardItem, Text } from 'native-base';
-import HeaderApp from '../components/HeaderApp';
-import Carousel from 'react-native-banner-carousel';
-import Layout from '../components/Layout';
 
-import { renderItem, pathImage } from '../utils'
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from '@react-navigation/native';
 
-import { fetchProducts } from '../services/home'
+import HeaderApp from '../../components/HeaderApp';
+import Layout from '../../components/Layout';
+
+import { renderItem, pathImage } from '../../utils'
+import { fetchProducts } from '../../services/home'
 
 const BannerWidth = Dimensions.get('window').width;
 const images = [
