@@ -2,18 +2,27 @@
  * Header Home
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { View, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Header, Left, Body, Right, Button, Item, Input } from 'native-base';
+import { Header, Body, Right, Button, Item, Input } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { toggleMenu } from '../redux/actions'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HeaderApp = (props) => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    let status = useSelector(store => store.menuReducer);
+    const [userInfo, setUserInfo] = useState();
+
+    useEffect(() => {
+        const getUserInfo = async () => {
+          const jsonValue = await AsyncStorage.getItem('userInfo');
+          setUserInfo(jsonValue != null ? JSON.parse(jsonValue) : null);
+        }
+    
+        getUserInfo();
+    }, []);
     
     return (
         <>
@@ -22,11 +31,6 @@ const HeaderApp = (props) => {
                     style={{ backgroundColor: '#8CC23F' }}
                     androidStatusBarColor="#8CC23F"
                 >
-                <Left>
-                    <Button transparent onPress={ () => dispatch(toggleMenu()) }>
-                        <Icon name={status ? 'close' : 'bars' } style={styles.iconMenu} size={28} />
-                    </Button>
-                </Left>
                 <Body>
                 <Item style={styles.input}>
                     <Input placeholder='Buscar en vitrina virtual' />
@@ -35,14 +39,14 @@ const HeaderApp = (props) => {
                 </Body>
                 <Right>
                     <Button transparent onPress={()=> navigation.navigate('Cart')}>
-                        <Icon name='shopping-cart' style={styles.iconMenu} size={30} />
+                        <Icon name='shopping-cart' style={styles.iconMenu} size={34} />
                     </Button>
                 </Right>
                 </Header>
-                <View style={styles.userbar}>
+                {userInfo && <View style={styles.userbar}>
                     <Icon name="user" size={20} style={styles.icon} />
-                    <Text style={styles.name}>Daniel Felipe Lucumi</Text>
-                </View>
+                    <Text style={styles.name}>{userInfo.nombre} {userInfo.appellido}</Text>
+                </View>}
             </View> 
         </>
     );
@@ -67,9 +71,10 @@ const styles = StyleSheet.create({
     },
     input: {
         backgroundColor: "#fff",        
-        height: 35,
+        height: 40,
         padding: 5,
-        width: 260
+        width: 310,
+        borderRadius: 5
     }
 });
 

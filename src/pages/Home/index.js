@@ -3,33 +3,28 @@
  */
 
 import React, { useEffect } from 'react';
-import Carousel from 'react-native-banner-carousel';
-import { StyleSheet, Dimensions, View, FlatList,TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, FlatList,TouchableOpacity, Image } from 'react-native';
 import { H2,Card, CardItem, Text } from 'native-base';
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
 
+import SliderCategory from '../../components/SliderCategory';
 import HeaderApp from '../../components/HeaderApp';
 import Layout from '../../components/Layout';
 
-import { renderItem, pathImage } from '../../utils'
-import { fetchProducts } from '../../services/home'
+import { renderItem, pathImage } from '../../utils';
+import { fetchProducts, fetchCategorias } from '../../services/home';
 
-const BannerWidth = Dimensions.get('window').width;
-const images = [
-    "https://vitrinavirtualfecoomeva.com/storage/sliders/a-banner-vitrina-2020.jpg",
-    "https://vitrinavirtualfecoomeva.com/storage/sliders/banner-2.jpg",
-    "https://vitrinavirtualfecoomeva.com/storage/sliders/banner-3.jpg"
-];
-
-const  Home = ({props}) => {
+const  Home = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const { loading, data }  = useSelector(store => store.homeReducer)
+    const { data }  = useSelector(store => store.homeReducer);
+    const categorias = useSelector(store => store.categoryReducer);
 
     useEffect(() => {
         dispatch(fetchProducts());
+        dispatch(fetchCategorias());
     }, []);
 
     const ItemProducto = ({ item }) => {
@@ -37,7 +32,9 @@ const  Home = ({props}) => {
         return (
             <Card>
                 <CardItem header bordered>
+                  <TouchableOpacity onPress={() => navigation.navigate('Product', item)}>
                     <Text>{titulo}</Text>
+                  </TouchableOpacity>
                 </CardItem>
                 <CardItem bordered>
                     <Image 
@@ -56,22 +53,16 @@ const  Home = ({props}) => {
 
     return (<Layout>
         <HeaderApp />
-        <Carousel
-            autoplay
-            autoplayTimeout={5000}
-            loop
-            index={0}
-            pageSize={BannerWidth}
-        >
-            {images.map((image, index) => renderItem(image, index))}
-        </Carousel>
         <View style={styles.cardTitle}>
+            <View style={styles.categoryContainer}>
+                <SliderCategory data={categorias} />
+            </View>
             <H2>Productos vitrina</H2>
             {
                 <FlatList
                     data={data.data}
                     renderItem={ItemProducto}
-                    keyExtractor={(item, index) => item.id}
+                    keyExtractor={(item) => parseInt(item.id)}
                     // extraData={navigation}
                 />
             }
@@ -101,6 +92,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.20,
         shadowRadius: 1.41,
         elevation: 2,
+    },
+    categoryContainer: {
+        marginBottom: 10,
     }
 });
 
