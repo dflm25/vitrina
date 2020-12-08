@@ -13,8 +13,10 @@ import SliderCategory from '../../components/SliderCategory';
 import HeaderApp from '../../components/HeaderApp';
 import Layout from '../../components/Layout';
 
-import { renderItem, pathImage } from '../../utils';
+import { pathImage } from '../../utils';
 import { fetchProducts, fetchCategorias } from '../../services/home';
+
+import styles from './styles';
 
 const  Home = () => {
     const navigation = useNavigation();
@@ -57,45 +59,20 @@ const  Home = () => {
             <View style={styles.categoryContainer}>
                 <SliderCategory data={categorias} />
             </View>
-            <H2>Productos vitrina</H2>
             {
-                <FlatList
-                    data={data.data}
-                    renderItem={ItemProducto}
-                    keyExtractor={(item) => parseInt(item.id)}
-                    // extraData={navigation}
-                />
+                (data.data && data.data.length > 0) ? <View>
+                    <H2>Productos vitrina</H2>
+                    <FlatList
+                        data={data.data}
+                        renderItem={ItemProducto}
+                        keyExtractor={(item) => parseInt(item.id)}
+                    /> 
+                </View> : <View style={styles.contenNoFound}>
+                    <Text style={styles.textNoFound}>No se encontraron productos</Text>
+                </View>
             }
         </View>
     </Layout>);
 }
-
-const styles = StyleSheet.create({
-    logo: {
-        width: 40, 
-        height: 40
-    },
-    icon: {
-        color: "#fff",
-        marginRight: 10
-    },
-    name: {
-        color: "#fff"
-    },
-    cardTitle: {
-        padding: 10,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-        elevation: 2,
-    },
-    categoryContainer: {
-        marginBottom: 10,
-    }
-});
 
 export default Home;

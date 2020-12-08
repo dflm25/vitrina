@@ -121,7 +121,11 @@ const Product = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      <ModalAddProduct state={modal} action={setModal} />
+      <ModalAddProduct 
+        state={modal} 
+        action={setModal} 
+        data={{ imagen_principal, titulo, colors }}
+      />
     </Layout>
     );
 }

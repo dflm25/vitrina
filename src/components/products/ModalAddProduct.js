@@ -1,12 +1,21 @@
 
-import React from 'react'
-import { StyleSheet, View, Text, Modal, Alert, TouchableHighlight, Dimensions } from 'react-native';
+import React, { useState } from 'react'
+import { StyleSheet, View, Text, Modal, Alert, TouchableHighlight, Dimensions, ImageBackground } from 'react-native';
+import {ColorsProduct} from '../products';
+import { pathImage } from '../../utils';
+import { fetchTallasByColor } from '../../services/products';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 const ModalAddProduct = (props) => {
-  const { state, action } = props;
+  const { state, action, data } = props;
+  const [color, setColor] = useState();
+
+  // Handle change color
+  const handleOnSelect = (color) => {
+    
+  }
 
   return (
     <Modal
@@ -19,7 +28,16 @@ const ModalAddProduct = (props) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
+            <ImageBackground
+              source={{ uri: `${pathImage}${data.imagen_principal}` }}
+              style={{width: '100%', height: '70%'}}
+            > 
+              <Text style={styles.title}>{data.titulo}</Text>
+            </ImageBackground>
+            <ColorsProduct 
+              data={data.colors} 
+              action={handleOnSelect}
+            />
             <TouchableHighlight
                 style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                 onPress={() => {
@@ -37,17 +55,14 @@ const ModalAddProduct = (props) => {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'flex-end',
     alignItems: "center",
     backgroundColor: 'rgba(0,0,0,0.3)'
   },
   modalView: {
-    width: width - 30,
-    margin: 20,
+    width: width - 20,
     backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
+    padding: 0,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -56,7 +71,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    height: height - 100
+    height: height - 100,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10
+  },
+  title: {
+    fontSize: 28,
+    padding: 20,
+    fontWeight: 'bold',
+    textAlign: 'right',
+    color: '#fff',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10
   },
   openButton: {
     backgroundColor: "#F194FF",
@@ -67,10 +94,6 @@ const styles = StyleSheet.create({
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
-  },
-  modalText: {
-    marginBottom: 15,
     textAlign: "center"
   }
 });

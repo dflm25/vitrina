@@ -9,7 +9,9 @@ import { host } from '../utils';
 export function fetchProducts(credentials) {
     return async (dispatch) => {
         dispatch(action.setSpinner(true));
-        Http.get(`${host}get-productos-home`, credentials)
+        Http.get(`${host}get-productos-home`, {
+            params: credentials
+        })
         .then((res) => {
             const { data } = res;
             dispatch(action.setHomeProductos(data));    
