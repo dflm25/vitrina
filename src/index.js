@@ -11,15 +11,15 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
-import store from './src/redux/store'
+import store from './redux/store'
 
 // Pages
-import Login from './src/pages/Login';
-import Register from './src/pages/Register';
-import Home from './src/pages/Home';
-import Cart from './src/pages/Cart';
-import Product from './src/pages/Product';
-import Dashboard from './src/pages/Dashboard';
+import Main from './pages/Main';
+import Cart from './pages/Cart';
+import Login from './pages/Login';
+import Product from './pages/Product';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
 
 const Stack = createStackNavigator();
 
@@ -30,7 +30,7 @@ const App = () => {
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen 
             options={{ headerShown: false }} 
-            name="Home" component={Home} 
+            name="Home" component={Main}
           />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Login" component={Login} />

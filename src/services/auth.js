@@ -17,7 +17,6 @@ export const login = (credentials) => {
       dispatch(action.setSpinner(false));
     })
     .catch((error) => {
-      console.log('Respuesta error', error);
       dispatch(action.setSpinner(false));
     })
   );

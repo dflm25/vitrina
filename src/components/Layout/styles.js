@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   textIcon: {
-    fontSize: 10,
+    fontSize: 9,
     fontWeight: 'bold',
     color: '#fff'
   },

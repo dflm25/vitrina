@@ -7,33 +7,31 @@ import Http from './Http';
 import { host } from '../utils';
 
 export function fetchProducts(credentials) {
-    return async (dispatch) => {
-        dispatch(action.setSpinner(true));
+    return new Promise ((resolve, reject) => {
+        // dispatch(action.setSpinner(true));
         Http.get(`${host}get-productos-home`, {
             params: credentials
         })
         .then((res) => {
             const { data } = res;
-            dispatch(action.setHomeProductos(data));    
-            dispatch(action.setSpinner(false));
+            resolve(data);
+            // dispatch(action.setSpinner(false));
         })
         .catch((error) => {
-            console.log('errores', error);
-            dispatch(action.setSpinner(false));
+            reject('Error', error);
         })
-    };    
+    })    
 }
 
 export function fetchCategorias() {
-    return async (dispatch) => {
-        dispatch(action.setSpinner(true));
+    return new Promise ((resolve, reject)=> {
         Http.get(`${host}get-categorias-home`)
         .then((res) => {
             const { data } = res;
-            dispatch(action.setHomeCategorias(data));    
+            resolve(data);
         })
         .catch((error) => {
-            console.log('error loading category', error);
+            reject(error);
         })
-    };    
+    });    
 }
